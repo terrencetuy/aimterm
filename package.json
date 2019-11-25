@@ -1,0 +1,22 @@
+{
+  "name": "aimterm",
+  "version": "1.0.0",
+  "description": "Terminal emulator that looks like AOL Instant Messenger",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/terrencetuy/aimterm.git"
+  },
+  "author": "Terrence Tuy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/terrencetuy/aimterm/issues"
+  },
+  "homepage": "https://github.com/terrencetuy/aimterm#readme",
+  "dependencies": {
+    "electron": "^7.1.2"
+  }
+}
