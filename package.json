@@ -2,8 +2,9 @@
   "name": "aimterm",
   "version": "1.0.0",
   "description": "Terminal emulator that looks like AOL Instant Messenger",
-  "main": "index.js",
+  "main": "main.js",
   "scripts": {
+    "start": "electron .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
