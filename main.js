@@ -7,7 +7,11 @@ function createWindow () {
 		height: 600,
 		webPreferences: {
 			nodeIntegration: true
+		},
+		dummy: () => {
+			alert('hello!!!');
 		}
+
 	})
 
 	win.loadFile('index.html')	

@@ -4,11 +4,47 @@
 		<meta charset="utf-8" />
 		<title>Hello World!</title>
 		<meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+		<style>
+			body {
+				background-color: grey;
+			}
+			#top-window, #bottom-window {
+				width: 90%,
+				height:30%
+				background-color: white;
+			}
+		</style>
 	</head>
-	<body>
-		<h1>Hello World!</h1>
-		We are using node <script>document.write(process.versions.node)</script>,
-		Chrome <script>document.write(process.versions.chrome)</script>,
-		and Electron <script>document.write(process.versions.electron)</script>.
+	<body onload="init()">
+		<textarea id="top-window" disabled="true"></textarea>
+		<div id="function-bar">function bar</div>
+		<textarea id="bottom-window"></textarea>
+		<div id="bottom-bar">
+			<input type="submit" onClick="sendMessage()"/>
+		</div>
 	</body>
+	<script>
+		function init() {
+			//todo: init top window
+		}
+
+		function sendMessage() {
+			document.getElementById('top-window').value += "\n" + document.getElementById('bottom-window').value
+
+			const { spawn } = require('child_process');
+			const toExec = document.getElementById('bottom-window').value
+			const command = spawn(toExec);
+			command.stdout.on('data', (data) => {
+				document.getElementById('top-window').value += "\n" + data
+			});
+
+			command.stderr.on('data', (data) => {
+				console.error(`stderr: ${data}`);
+			});
+
+			command.on('close', (code) => {
+				console.log(`child process exited with code ${code}`);
+			});
+		}
+	</script>
 </html>
