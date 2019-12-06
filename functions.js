@@ -12,8 +12,11 @@ function sendMessage() {
 	document.getElementById('top-window').value += "\n" + document.getElementById('bottom-window').value;
 
 	const { spawn } = require('child_process');
-	const toExec = document.getElementById('bottom-window').value
-	const command = spawn(toExec);
+
+	let args = document.getElementById('bottom-window').value.split(' ');
+	
+	const toExec = args.shift()
+	const command = spawn(toExec, args);
 	command.stdout.on('data', (data) => {
 		document.getElementById('top-window').value += "\n" + data
 	});
