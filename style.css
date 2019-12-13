@@ -4,4 +4,6 @@ body {
 
 #top-window, #bottom-window {
 	background-color: white;
+	width: 90%;
+	height: 100px;
 }

@@ -1,5 +1,6 @@
 function init() {
-	//todo: init top window
+	// set focus
+	document.getElementById('bottom-window').focus();
 }
 
 function checkSend() {
@@ -19,6 +20,7 @@ function sendMessage() {
 	const command = spawn(toExec, args);
 	command.stdout.on('data', (data) => {
 		document.getElementById('top-window').value += "\n" + data
+		document.getElementById('top-window').scrollTop = document.getElementById('top-window').scrollHeight;
 	});
 
 	command.stderr.on('data', (data) => {
@@ -29,6 +31,6 @@ function sendMessage() {
 		console.log(`child process exited with code ${code}`);
 	});
 	
-	document.getElementById('bottom-window').value = ""
+	document.getElementById('bottom-window').value = "";
 }
 
