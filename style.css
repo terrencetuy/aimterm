@@ -6,4 +6,13 @@ body {
 	background-color: white;
 	width: 90%;
 	height: 100px;
+	overflow: scroll;
+}
+
+.sender-prompt {
+	color: red;
+}
+
+.recipient-prompt {
+	color: blue;
 }

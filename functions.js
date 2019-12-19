@@ -10,27 +10,44 @@ function checkSend() {
 }
 
 function sendMessage() {
-	document.getElementById('top-window').value += "\n" + document.getElementById('bottom-window').value;
-
 	const { spawn } = require('child_process');
 
-	let args = document.getElementById('bottom-window').value.split(' ');
-	
-	const toExec = args.shift()
-	const command = spawn(toExec, args);
-	command.stdout.on('data', (data) => {
-		document.getElementById('top-window').value += "\n" + data
-		document.getElementById('top-window').scrollTop = document.getElementById('top-window').scrollHeight;
-	});
+	// display command
+	let commandDiv = document.createElement('div');
+	let getUserCommand = spawn('whoami');
+	getUserCommand.stdout.on('data', (data) => {
+		let toExecCmd = document.createTextNode(document.getElementById('bottom-window').value);
+		let userSpan = document.createElement('span');
+		userSpan.classList.add('sender-prompt');
+		let userSpanText = document.createTextNode(data.toString().trim() + ': ');
+		userSpan.appendChild(userSpanText);
+		commandDiv.appendChild(userSpan);
+		commandDiv.appendChild(toExecCmd);
+		document.getElementById('top-window').appendChild(commandDiv); 
 
-	command.stderr.on('data', (data) => {
-		console.error(`stderr: ${data}`);
-	});
+		// display response
+		let responseDiv = document.createElement('div');
+		let getHostCommand = spawn('hostname');
+		getHostCommand.stdout.on('data', (data) => {
+			console.log(data.toString());
+			let hostSpan = document.createElement('span');
+			hostSpan.classList.add('recipient-prompt');
+			let hostSpanText = document.createTextNode(data.toString().trim() + ': ');
+			hostSpan.appendChild(hostSpanText);
+			responseDiv.appendChild(hostSpan);
+			let args = document.getElementById('bottom-window').value.trim().split(' ');
+			let toExec = args.shift();
+			let getOutputCommand = spawn(toExec, args);
+			getOutputCommand.stdout.on('data', (data) => {
+				let outputText = document.createTextNode(data.toString().trim());
+				document.getElementById('top-window').value += "\n" + data
+				responseDiv.appendChild(outputText);
+				document.getElementById('top-window').appendChild(responseDiv); 
+				document.getElementById('top-window').scrollTop = document.getElementById('top-window').scrollHeight;
+				document.getElementById('bottom-window').value = "";
+			});
 
-	command.on('close', (code) => {
-		console.log(`child process exited with code ${code}`);
+		});
 	});
-	
-	document.getElementById('bottom-window').value = "";
 }
 
