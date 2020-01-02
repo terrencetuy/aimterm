@@ -29,7 +29,6 @@ function sendMessage() {
 		let responseDiv = document.createElement('div');
 		let getHostCommand = spawn('hostname');
 		getHostCommand.stdout.on('data', (data) => {
-			console.log(data.toString());
 			let hostSpan = document.createElement('span');
 			hostSpan.classList.add('recipient-prompt');
 			let hostSpanText = document.createTextNode(data.toString().trim() + ': ');
@@ -40,8 +39,13 @@ function sendMessage() {
 			let getOutputCommand = spawn(toExec, args);
 			getOutputCommand.stdout.on('data', (data) => {
 				let outputText = document.createTextNode(data.toString().trim());
-				document.getElementById('top-window').value += "\n" + data
-				responseDiv.appendChild(outputText);
+				const outputLines = data.toString().trim().split(/\r\n|\r|\n/g);
+				for (let i = 0; i < outputLines.length; i++) {
+					let outputLineDiv = document.createElement('div');
+					let outputLineContent = document.createTextNode(outputLines[i]);
+					outputLineDiv.appendChild(outputLineContent);
+					responseDiv.appendChild(outputLineDiv);
+				}
 				document.getElementById('top-window').appendChild(responseDiv); 
 				document.getElementById('top-window').scrollTop = document.getElementById('top-window').scrollHeight;
 				document.getElementById('bottom-window').value = "";
